@@ -1,0 +1,6 @@
+@C4Generator.Api_HostAddress = http://localhost:5231
+
+GET {{C4Generator.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

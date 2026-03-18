@@ -1,0 +1,29 @@
+# Build outputs
+**/bin/
+**/obj/
+
+# Certificates and private keys — never commit these
+*.pem
+*.cert
+*.key
+certs/
+
+# Local developer secrets — override appsettings.json on each machine
+src/C4Generator.Api/appsettings.Development.json
+
+# IDE / OS artifacts
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.DotSettings
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Test results
+**/TestResults/
+coverage/

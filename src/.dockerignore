@@ -1,0 +1,33 @@
+## Ignore build outputs
+**/bin/
+**/obj/
+
+## Ignore git artifacts
+.git/
+.gitignore
+.gitattributes
+
+## Ignore IDE/editor files
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.DotSettings
+
+## Ignore test results and coverage
+**/TestResults/
+coverage/
+
+## Ignore logs
+logs/
+*.log
+
+## Ignore Docker files from context (except the one being used)
+**/Dockerfile*
+**/.dockerignore
+
+## Ignore docs and scripts not needed at runtime
+README.md
+docs/
+*.sh
+*.ps1
