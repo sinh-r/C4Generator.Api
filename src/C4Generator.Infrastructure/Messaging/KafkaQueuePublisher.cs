@@ -18,12 +18,17 @@ internal sealed class KafkaQueuePublisher : IQueuePublisher, IDisposable
         var config = new ProducerConfig
         {
             BootstrapServers = settings.BootstrapServers,
-            SecurityProtocol = ParseSecurityProtocol(settings.SecurityProtocol),
-            SslCaLocation = settings.SslCaLocation,
-            SslCertificateLocation = settings.SslCertificateLocation,
-            SslKeyLocation = settings.SslKeyLocation,
-            SslKeyPassword = settings.SslKeyPassword
+            SecurityProtocol = ParseSecurityProtocol(settings.SecurityProtocol)
         };
+
+        if (!string.IsNullOrEmpty(settings.SslCaLocation))
+            config.SslCaLocation = settings.SslCaLocation;
+        if (!string.IsNullOrEmpty(settings.SslCertificateLocation))
+            config.SslCertificateLocation = settings.SslCertificateLocation;
+        if (!string.IsNullOrEmpty(settings.SslKeyLocation))
+            config.SslKeyLocation = settings.SslKeyLocation;
+        if (!string.IsNullOrEmpty(settings.SslKeyPassword))
+            config.SslKeyPassword = settings.SslKeyPassword;
 
         _producer = new ProducerBuilder<Null, string>(config).Build();
     }

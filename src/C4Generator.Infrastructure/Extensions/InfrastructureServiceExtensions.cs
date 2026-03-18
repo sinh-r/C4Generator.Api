@@ -26,6 +26,7 @@ public static class InfrastructureServiceExtensions
         // Messaging (Confluent Kafka)
         services.Configure<KafkaSettings>(configuration.GetSection("Kafka"));
         services.AddSingleton<IQueuePublisher, KafkaQueuePublisher>();
+        services.AddSingleton(typeof(IKafkaConsumer<>), typeof(KafkaConsumer<>));
 
         // GitHub
         services.Configure<GitHubSettings>(configuration.GetSection("GitHub"));

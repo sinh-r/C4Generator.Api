@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
     <ProjectReference Include="..\C4Generator.Application\C4Generator.Application.csproj" />
     <ProjectReference Include="..\C4Generator.Infrastructure\C4Generator.Infrastructure.csproj" />
+    <ProjectReference Include="..\C4Generator.Worker\C4Generator.Worker.csproj" />
   </ItemGroup>
 
   <ItemGroup>

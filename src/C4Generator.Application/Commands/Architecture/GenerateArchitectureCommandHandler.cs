@@ -35,6 +35,7 @@ public sealed class GenerateArchitectureCommandHandler : IRequestHandler<Generat
         var message = new GenerateArchitectureMessage(
             repository.Id,
             model.Id,
+            job.Id,
             repository.Url,
             request.Branch ?? repository.DefaultBranch ?? "main"
         );
