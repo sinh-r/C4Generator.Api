@@ -25,12 +25,14 @@ public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCom
 
     public async Task<AuthResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var emailExists = await _unitOfWork.Users.ExistsAsync(request.Email, cancellationToken);
+        var normalizedEmail = request.Email.ToLowerInvariant();
+
+        var emailExists = await _unitOfWork.Users.ExistsAsync(normalizedEmail, cancellationToken);
         if (emailExists)
-            throw new ConflictException($"A user with email '{request.Email}' already exists.");
+            throw new ConflictException($"A user with email '{normalizedEmail}' already exists.");
 
         var passwordHash = _passwordHasher.Hash(request.Password);
-        var user = User.Create(request.Username, request.Email, passwordHash);
+        var user = User.Create(request.Username, normalizedEmail, passwordHash);
 
         await _unitOfWork.Users.AddAsync(user, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

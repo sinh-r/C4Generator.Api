@@ -34,7 +34,10 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<IGitHubService, GitHubService>();
 
         // Auth
-        services.Configure<JwtSettings>(configuration.GetSection("Auth"));
+        services.AddOptions<JwtSettings>()
+            .BindConfiguration("Auth")
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 

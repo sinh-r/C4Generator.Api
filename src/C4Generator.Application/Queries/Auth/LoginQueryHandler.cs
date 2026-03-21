@@ -24,7 +24,8 @@ public sealed class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse
 
     public async Task<AuthResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Users.GetByEmailAsync(request.Email, cancellationToken);
+        var normalizedEmail = request.Email.ToLowerInvariant();
+        var user = await _unitOfWork.Users.GetByEmailAsync(normalizedEmail, cancellationToken);
         if (user is null || !_passwordHasher.Verify(request.Password, user.PasswordHash))
             throw new UnauthorizedException("Invalid email or password.");
 
