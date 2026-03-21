@@ -1,5 +1,6 @@
 using C4Generator.Application.Abstractions;
 using C4Generator.Domain.Interfaces;
+using C4Generator.Infrastructure.Auth;
 using C4Generator.Infrastructure.GitHub;
 using C4Generator.Infrastructure.Messaging;
 using C4Generator.Infrastructure.Persistence;
@@ -31,6 +32,11 @@ public static class InfrastructureServiceExtensions
         // GitHub
         services.Configure<GitHubSettings>(configuration.GetSection("GitHub"));
         services.AddScoped<IGitHubService, GitHubService>();
+
+        // Auth
+        services.Configure<JwtSettings>(configuration.GetSection("Auth"));
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         return services;
     }

@@ -27,6 +27,16 @@ public sealed class ExceptionHandlingMiddleware
             _logger.LogWarning(ex, "Resource not found: {Message}", ex.Message);
             await WriteProblemDetailsAsync(context, StatusCodes.Status404NotFound, "Not Found", ex.Message);
         }
+        catch (ConflictException ex)
+        {
+            _logger.LogWarning(ex, "Conflict: {Message}", ex.Message);
+            await WriteProblemDetailsAsync(context, StatusCodes.Status409Conflict, "Conflict", ex.Message);
+        }
+        catch (UnauthorizedException ex)
+        {
+            _logger.LogWarning(ex, "Unauthorized: {Message}", ex.Message);
+            await WriteProblemDetailsAsync(context, StatusCodes.Status401Unauthorized, "Unauthorized", ex.Message);
+        }
         catch (ValidationException ex)
         {
             _logger.LogWarning("Validation failed for request to {Path}", context.Request.Path);

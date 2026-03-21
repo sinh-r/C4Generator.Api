@@ -11,6 +11,7 @@ internal sealed class UnitOfWork : IUnitOfWork
     public IArchitectureRepository Architectures { get; }
     public IJobRepository Jobs { get; }
     public IInsightRepository Insights { get; }
+    public IUserRepository Users { get; }
 
     public UnitOfWork(AppDbContext context)
     {
@@ -19,6 +20,7 @@ internal sealed class UnitOfWork : IUnitOfWork
         Architectures = new ArchitectureRepository(context);
         Jobs = new JobRepository(context);
         Insights = new InsightRepository(context);
+        Users = new UserRepository(context);
     }
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
