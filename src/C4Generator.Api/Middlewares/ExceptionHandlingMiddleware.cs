@@ -1,6 +1,6 @@
 using C4Generator.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+using Microsoft.Extensions.Options;
 using ValidationException = C4Generator.Application.Exceptions.ValidationException;
 
 namespace C4Generator.Api.Middlewares;
@@ -26,6 +26,16 @@ public sealed class ExceptionHandlingMiddleware
         {
             _logger.LogWarning(ex, "Resource not found: {Message}", ex.Message);
             await WriteProblemDetailsAsync(context, StatusCodes.Status404NotFound, "Not Found", ex.Message);
+        }
+        catch (ConflictException ex)
+        {
+            _logger.LogWarning(ex, "Conflict: {Message}", ex.Message);
+            await WriteProblemDetailsAsync(context, StatusCodes.Status409Conflict, "Conflict", ex.Message);
+        }
+        catch (UnauthorizedException ex)
+        {
+            _logger.LogWarning(ex, "Unauthorized: {Message}", ex.Message);
+            await WriteProblemDetailsAsync(context, StatusCodes.Status401Unauthorized, "Unauthorized", ex.Message);
         }
         catch (ValidationException ex)
         {
@@ -55,10 +65,9 @@ public sealed class ExceptionHandlingMiddleware
             Instance = context.Request.Path
         };
 
-        context.Response.ContentType = "application/problem+json";
+        var jsonOptions = context.RequestServices.GetService<IOptions<JsonOptions>>()?.Value.JsonSerializerOptions;
         context.Response.StatusCode = statusCode;
-
-        await context.Response.WriteAsync(JsonSerializer.Serialize(problem));
+        await context.Response.WriteAsJsonAsync(problem, jsonOptions, "application/problem+json");
     }
 
     private static async Task WriteValidationProblemDetailsAsync(HttpContext context, ValidationException ex)
@@ -73,9 +82,8 @@ public sealed class ExceptionHandlingMiddleware
             Instance = context.Request.Path
         };
 
-        context.Response.ContentType = "application/problem+json";
+        var jsonOptions = context.RequestServices.GetService<IOptions<JsonOptions>>()?.Value.JsonSerializerOptions;
         context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
-
-        await context.Response.WriteAsync(JsonSerializer.Serialize(problem));
+        await context.Response.WriteAsJsonAsync(problem, jsonOptions, "application/problem+json");
     }
 }

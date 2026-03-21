@@ -29,6 +29,28 @@ public sealed class ApiExceptionFilter : IExceptionFilter
                 context.ExceptionHandled = true;
                 break;
 
+            case ConflictException ex:
+                context.Result = new ConflictObjectResult(new ProblemDetails
+                {
+                    Title = "Conflict",
+                    Detail = ex.Message,
+                    Status = StatusCodes.Status409Conflict,
+                    Instance = context.HttpContext.Request.Path
+                });
+                context.ExceptionHandled = true;
+                break;
+
+            case UnauthorizedException ex:
+                context.Result = new UnauthorizedObjectResult(new ProblemDetails
+                {
+                    Title = "Unauthorized",
+                    Detail = ex.Message,
+                    Status = StatusCodes.Status401Unauthorized,
+                    Instance = context.HttpContext.Request.Path
+                });
+                context.ExceptionHandled = true;
+                break;
+
             case ValidationException ex:
                 context.Result = new UnprocessableEntityObjectResult(new ValidationProblemDetails(
                     ex.Errors.ToDictionary(kv => kv.Key, kv => kv.Value))

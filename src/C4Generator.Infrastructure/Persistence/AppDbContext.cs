@@ -11,6 +11,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<ArchitectureModel> ArchitectureModels => Set<ArchitectureModel>();
     public DbSet<Job> Jobs => Set<Job>();
     public DbSet<Insight> Insights => Set<Insight>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
