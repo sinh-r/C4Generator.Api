@@ -22,7 +22,8 @@ public sealed class GetRepositoryByIdQueryHandler : IRequestHandler<GetRepositor
         return new RepositoryDto(
             repository.Id, repository.Name, repository.Owner, repository.Url,
             repository.Description, repository.DefaultBranch, repository.Language,
-            repository.ArchitectureStatus, repository.CreatedAt, repository.UpdatedAt
+            repository.ArchitectureStatus, repository.Provider, repository.ExternalId,
+            repository.LastSyncedAt, repository.CreatedAt, repository.UpdatedAt
         );
     }
 }

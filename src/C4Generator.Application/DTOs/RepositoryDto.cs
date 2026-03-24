@@ -11,6 +11,9 @@ public record RepositoryDto(
     string? DefaultBranch,
     string? Language,
     ArchitectureStatus ArchitectureStatus,
+    SourceControlProvider Provider,
+    string ExternalId,
+    DateTime LastSyncedAt,
     DateTime CreatedAt,
     DateTime UpdatedAt
 );

@@ -30,6 +30,9 @@ public sealed class CreateRepositoryCommandHandler : IRequestHandler<CreateRepos
             repository.DefaultBranch,
             repository.Language,
             repository.ArchitectureStatus,
+            repository.Provider,
+            repository.ExternalId,
+            repository.LastSyncedAt,
             repository.CreatedAt,
             repository.UpdatedAt
         );
