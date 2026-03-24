@@ -1,5 +1,6 @@
 using C4Generator.Application.Commands.Repositories;
 using C4Generator.Application.Queries.Repositories;
+using C4Generator.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +31,18 @@ public sealed class RepositoryController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetAll(
+        [FromQuery] SourceControlProvider provider,
+        [FromQuery] RepositoryScope scope,
+        [FromQuery] string name,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken cancellationToken = default)
     {
-        var result = await _mediator.Send(new GetRepositoriesQuery(), cancellationToken);
+        var token = Request.Headers["X-Source-Token"].FirstOrDefault() ?? string.Empty;
+        var query = new GetRepositoriesQuery(provider, scope, name, token, pageNumber, pageSize);
+        var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
     }
 

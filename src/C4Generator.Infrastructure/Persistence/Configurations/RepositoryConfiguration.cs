@@ -48,6 +48,20 @@ internal sealed class RepositoryConfiguration : IEntityTypeConfiguration<Reposit
             .HasConversion<int>()
             .HasDefaultValue(ArchitectureStatus.NotGenerated);
 
+        builder.Property(r => r.Provider)
+            .HasColumnName("provider")
+            .HasConversion<int>()
+            .HasDefaultValue(SourceControlProvider.GitHub)
+            .IsRequired();
+
+        builder.Property(r => r.ExternalId)
+            .HasColumnName("external_id")
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(r => r.LastSyncedAt)
+            .HasColumnName("last_synced_at");
+
         builder.Property(r => r.CreatedAt)
             .HasColumnName("created_at");
 
@@ -55,5 +69,6 @@ internal sealed class RepositoryConfiguration : IEntityTypeConfiguration<Reposit
             .HasColumnName("updated_at");
 
         builder.HasIndex(r => r.Url).IsUnique();
+        builder.HasIndex(r => new { r.Provider, r.ExternalId }).IsUnique();
     }
 }
